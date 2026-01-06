@@ -1,0 +1,17 @@
+#meter-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+    #buttons {
+      margin-left: 10px;
+      display: flex;
+      flex-direction: column;
+      > :not(:last-child) {
+        margin-bottom: 10px;
+      }
+  }
+}
+
+h1 {
+    margin-top: 0;
+}
