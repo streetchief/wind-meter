@@ -1,9 +1,15 @@
+//#region HTMLElements
+
 /** @type {HTMLCanvasElement} */
 const canvas = document.getElementById('wind-meter')
 const ctx = canvas.getContext("2d")
 const angleDisplay = document.getElementById('angle')
 const coordinatesDisplay = document.getElementById('coords')
 const windValue = document.getElementById('wind-value')
+
+//#endregion
+
+//#region Constants
 
 const twoPi = 2 * Math.PI;
 const eigths = {
@@ -18,6 +24,10 @@ console.log(eigths)
 const midPoint = 150.5
 const radius = 101
 const innerRadius = radius - 25;
+
+//#endregion
+
+//#region Methods
 
 const degToRad = deg => deg * Math.PI / 180
 const radToDeg = rad => (rad * 180) / Math.PI
@@ -156,6 +166,8 @@ const resetClick = (_event) => {
     ctx.reset()
     initialize()
 }
+
+//#endregion
 
 strokeBlack()
 initialize()
