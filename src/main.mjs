@@ -5,7 +5,9 @@ const canvas = document.getElementById('wind-meter')
 const ctx = canvas.getContext("2d")
 const angleDisplay = document.getElementById('angle')
 const coordinatesDisplay = document.getElementById('coords')
-const windValue = document.getElementById('wind-value')
+const windMeter = document.getElementById('wind-value')
+const windMeterX = document.getElementById('wind-x')
+const windMeterY = document.getElementById('wind-y')
 
 //#endregion
 
@@ -39,12 +41,43 @@ const parametricY = (originY, radius, radians) => {
     return originY - (radius * Math.sin(radians))
 }
 
-const setAngle = (val = '&Theta;') => {
-    angleDisplay.innerHTML = val;
+const setAngle = (val = '-') => {
+    angleDisplay.innerText = val;
 }
+
+const getAngle = () => angleDisplay.innerText;
 
 const setCoords = (x = '-', y = '-') => {
     coordinatesDisplay.innerText = `x: ${x} y: ${y}`
+}
+
+const rounder = num => num.toFixed(1)
+const setWindX = (val) => {
+    windMeterX.value = typeof val === 'number' ? rounder(val) : '-';
+}
+
+const setWindY = val => {
+    windMeterY.value = typeof val === 'number' ? rounder(val) : '-';
+}
+
+const setWindMeter = (num = 5) => windMeter.value = 5;
+
+const onWindChange = (event) => {
+    console.log(getAngle())
+    if (windMeter.value === '') {
+        setWindX()
+        setWindY()
+        return;
+    }
+
+    const wind = Number(windMeter.value);
+    const theta = Number(getAngle());
+
+    console.log('wind change', wind, theta)
+    const windX = wind * Math.cos(theta)
+    const windY = wind * Math.sin(theta)
+    setWindX(windX)
+    setWindY(windY)
 }
 
 const calculateQuadrant = (x, y) => {
@@ -105,15 +138,22 @@ const drawCrosshair = () => {
  * @param {number} tipY 
  */
 const drawRotatedArrow = (tipX, tipY) => {
-    const tipToWing =  eigths[3]
+    const tipToWing = eigths[3]
     const tipToTip = eigths[2]
     ctx.beginPath()
-    ctx.moveTo(tipX, tipY)
     const horizontalDiff = Math.abs(tipX - midPoint)
     const vertDiff = Math.abs(tipY - midPoint)
     const theta = Math.atan(vertDiff / horizontalDiff)
+    setAngle(theta)
     const quadrant = calculateQuadrant(tipX, tipY)
     const rotation = calculateRotationRadians(theta, quadrant)
+    const windX = windMeter.value * Math.cos(theta)
+    const windY = windMeter.value * Math.sin(theta)
+    setWindX(windX)
+    setWindY(windY)
+    const nearestX = parametricX(midPoint, radius, rotation)
+    const nearestY = parametricY(midPoint, radius, rotation)
+    ctx.moveTo(nearestX, nearestY)
     const p1Rotation = rotation + tipToWing
     const p1X = parametricX(midPoint, radius, p1Rotation)
     const p1Y = parametricY(midPoint, radius, p1Rotation)
@@ -126,24 +166,10 @@ const drawRotatedArrow = (tipX, tipY) => {
     ctx.stroke()
 }
 
-const drawArrow = () => {
-    ctx.beginPath()
-    ctx.moveTo(midPoint, midPoint - innerRadius)
-    const fiveEighths = twoPi * (5 / 8)
-    const pointOneX = parametricX(midPoint, innerRadius, fiveEighths)
-    const pointOneY = parametricY(midPoint, innerRadius, fiveEighths)
-    ctx.lineTo(pointOneX, pointOneY)
-    const secondX = parametricX(midPoint, innerRadius, (-1 * Math.PI) / 4)
-    ctx.lineTo(secondX, pointOneY)
-    ctx.closePath()
-    ctx.stroke()
-}
-
 const initialize = () => {
     drawCrosshair()
     drawCircle()
 }
-
 
 /** @param {MouseEvent} event */
 const canvasClick = (event) => {
@@ -156,7 +182,6 @@ const canvasClick = (event) => {
     ctx.arc(x, y, 5, 0, twoPi, true)
     fillGreen()
     ctx.fill()
-
     drawRotatedArrow(x, y)
 }
 
@@ -165,6 +190,9 @@ const resetClick = (_event) => {
     setAngle()
     ctx.reset()
     initialize()
+    setWindX()
+    setWindY()
+    setWindMeter()
 }
 
 //#endregion
@@ -173,3 +201,4 @@ strokeBlack()
 initialize()
 canvas.addEventListener('click', canvasClick)
 document.getElementById('reset').addEventListener('click', resetClick)
+windMeter.addEventListener('input', onWindChange)

@@ -16,8 +16,23 @@
         <canvas id="wind-meter" width="300" height="300"></canvas>
         <div id="buttons">
           <div id="coords">x: - y: -</div>
-          <div id="angle">&Theta;</div>
-          <input id="wind-value" type="number" min="1" value="5" />
+          <div>
+            <label>Θ (radians):</label>
+            <div id="angle">-</div>
+            <!-- <input id="angle" type="number" disabled/> -->
+          </div>
+          <div>
+            <label for="wind-value">Wind:</label>
+            <input id="wind-value" type="number" min="0" value="5" />
+          </div>
+          <div>
+            <label for="wind-x">wind x:</label>
+            <input id="wind-x" type="number" disabled />
+          </div>
+          <div>
+            <label for="wind-y">wind y:</label>
+            <input id="wind-y" type="number" disabled />
+          </div>
           <button id="reset" type="button">Reset</button>
         </div>
       </div>
