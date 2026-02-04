@@ -19,3 +19,8 @@
 h1 {
     margin-top: 0;
 }
+
+#wind-arrow {
+    background-color: lightblue;
+      /* image-rendering: pixelated; */
+}
