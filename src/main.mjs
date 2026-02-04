@@ -33,6 +33,8 @@ const innerRadius = radius - 25;
 
 const degToRad = deg => deg * Math.PI / 180
 const radToDeg = rad => (rad * 180) / Math.PI
+const rounder = num => num.toFixed(1)
+
 const parametricX = (originX, radius, radians) => {
     return originX + (radius * Math.cos(radians))
 }
@@ -42,7 +44,7 @@ const parametricY = (originY, radius, radians) => {
 }
 
 const setAngle = (val = '-') => {
-    angleDisplay.innerText = val;
+    angleDisplay.innerText = val === '-' ? '-' : rounder(val);
 }
 
 const getAngle = () => angleDisplay.innerText;
@@ -51,7 +53,6 @@ const setCoords = (x = '-', y = '-') => {
     coordinatesDisplay.innerText = `x: ${x} y: ${y}`
 }
 
-const rounder = num => num.toFixed(1)
 const setWindX = (val) => {
     windMeterX.value = typeof val === 'number' ? rounder(val) : '-';
 }
