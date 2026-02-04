@@ -37,6 +37,13 @@ const parametricX = (originX, radius, radians) => {
     return originX + (radius * Math.cos(radians))
 }
 
+/**
+ * N.B. we subtract instead of add due to the way the fact that y increases as it moves down on a webpage instead of up as on the Cartesian plane.
+ * @param {number} originY 
+ * @param {number} radius 
+ * @param {number} radians 
+ * @returns {number}
+ */
 const parametricY = (originY, radius, radians) => {
     return originY - (radius * Math.sin(radians))
 }

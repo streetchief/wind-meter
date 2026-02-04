@@ -1,3 +1,10 @@
+h1 {
+    margin-top: 0;
+}
+#wind-arrow {
+    background-color: lightblue;
+      /* image-rendering: pixelated; */
+}
 #meter-container {
   display: flex;
   justify-content: center;
@@ -14,13 +21,4 @@
         display: inline-block;
       }
   }
-}
-
-h1 {
-    margin-top: 0;
-}
-
-#wind-arrow {
-    background-color: lightblue;
-      /* image-rendering: pixelated; */
 }
