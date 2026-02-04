@@ -1,7 +1,7 @@
 //#region HTMLElements
 
 /** @type {HTMLCanvasElement} */
-const canvas = document.getElementById('wind-meter')
+const canvas = document.getElementById('wind-arrow')
 const ctx = canvas.getContext("2d")
 const angleDisplay = document.getElementById('angle')
 const coordinatesDisplay = document.getElementById('coords')
@@ -20,8 +20,6 @@ const eigths = {
     3: twoPi * (3 / 8),
     5: twoPi * (5 / 8),
 };
-
-console.log(eigths)
 
 const midPoint = 150.5
 const radius = 101
@@ -43,11 +41,15 @@ const parametricY = (originY, radius, radians) => {
     return originY - (radius * Math.sin(radians))
 }
 
+const getAngle = () => {
+    const text = angleDisplay.innerText;
+    if (text === '-') return
+    return Number(text)
+}
+
 const setAngle = (val = '-') => {
     angleDisplay.innerText = val === '-' ? '-' : rounder(val);
 }
-
-const getAngle = () => angleDisplay.innerText;
 
 const setCoords = (x = '-', y = '-') => {
     coordinatesDisplay.innerText = `x: ${x} y: ${y}`
@@ -61,20 +63,29 @@ const setWindY = val => {
     windMeterY.value = typeof val === 'number' ? rounder(val) : '-';
 }
 
-const setWindMeter = (num = 5) => windMeter.value = 5;
+const getWindMeter = () => {
+    const value = windMeter.value;
+    if (value === '') return undefined
+    return Number(windMeter.value);
+}
 
-const onWindChange = (event) => {
-    console.log(getAngle())
-    if (windMeter.value === '') {
+const setWindMeter = (num = 5) => {
+    windMeter.value = num;
+}
+
+const onWindInput = (_event) => {
+    const wind = getWindMeter()
+    const theta = getAngle()
+
+    if (wind === undefined || theta === undefined) {
         setWindX()
         setWindY()
         return;
     }
 
-    const wind = Number(windMeter.value);
-    const theta = Number(getAngle());
 
-    console.log('wind change', wind, theta)
+    console.debug('wind change', wind, theta)
+
     const windX = wind * Math.cos(theta)
     const windY = wind * Math.sin(theta)
     setWindX(windX)
@@ -175,7 +186,7 @@ const initialize = () => {
 /** @param {MouseEvent} event */
 const canvasClick = (event) => {
     // const pixel = ctx.getImageData(mousePos.x, mousePos.y, 1, 1).data;
-    console.log('canvas', event)
+    console.debug('canvas', event)
     const x = event.clientX - canvas.offsetLeft
     const y = event.clientY - canvas.offsetTop
     setCoords(x, y)
@@ -202,4 +213,4 @@ strokeBlack()
 initialize()
 canvas.addEventListener('click', canvasClick)
 document.getElementById('reset').addEventListener('click', resetClick)
-windMeter.addEventListener('input', onWindChange)
+windMeter.addEventListener('input', onWindInput)

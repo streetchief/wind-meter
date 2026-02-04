@@ -2,13 +2,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
-    #buttons {
+    #controls {
       margin-left: 10px;
       display: flex;
       flex-direction: column;
       align-items: start;
       > :not(:last-child) {
         margin-bottom: 10px;
+      }
+      #angle {
+        display: inline-block;
       }
   }
 }
